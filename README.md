@@ -13,7 +13,7 @@ Animações e efeitos com Tailwind
 
 Como usar
 Clone o repositório: git clone https://github.com/seunome/melodia.git
-Abra o index.html no navegador ou use uma extensão tipo Live Server no VSCode.
+Abra o main.html no navegador ou use uma extensão tipo Live Server no VSCode.
 
 
 Enzo Galhardo - RM561001
