@@ -12,7 +12,7 @@ Formulário de contato funcional (HTML)
 Animações e efeitos com Tailwind
 
 Como usar
-Clone o repositório: git clone https://github.com/seunome/melodia.git
+Clone o repositório: git clone https://github.com/lucas-villar/melodiaCP5
 Abra o main.html no navegador ou use uma extensão tipo Live Server no VSCode.
 
 
