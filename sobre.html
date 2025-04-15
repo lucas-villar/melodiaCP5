@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre - Melodia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+
+  <style>
+    body { font-family: 'Nunito', sans-serif; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-white scroll-smooth transition-colors duration-300">
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 w-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md z-50 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <h1 class="text-2xl font-bold text-teal-500 dark:text-teal-400">Melodia</h1>
+
+      <!-- Botões -->
+      <div class="flex items-center space-x-4">
+        <!-- Botão Tema -->
+        <button id="theme-toggle" class="text-teal-500 dark:text-teal-400 text-xl" aria-label="Alternar tema">
+          <i id="theme-icon" class="fas fa-moon"></i>
+        </button>
+
+        <!-- Botão Mobile -->
+        <button id="menu-btn" class="md:hidden text-teal-500 dark:text-teal-400 text-2xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Menu Desktop -->
+      <nav id="menu" class="hidden md:flex space-x-4">
+        <a href="./main.html" class="hover:text-teal-500 dark:hover:text-teal-400">Inicio</a>
+        
+        <a href="./contato.html" class="hover:text-teal-500 dark:hover:text-teal-400">Contato</a>
+      </nav>
+    </div>
+
+    <!-- Menu Mobile Expandido -->
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 space-y-2 bg-white/90 dark:bg-gray-900/90">
+      <a href="./main.html" class="block hover:text-teal-500 dark:hover:text-teal-400">Inicio</a>
+      
+      <a href="./contato.html" class="block hover:text-teal-500 dark:hover:text-teal-400">Contato</a>
+    </div>
+  </header>
+
+  <!-- SOBRE -->
+  <section class="pt-32 pb-20 px-6 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <div class="flex justify-center">
+        <img src="./img/landing.png" alt="Sobre o Melodia" class="w-3/4 md:w-full rounded-lg shadow-xl">
+      </div>
+      <div>
+        <h2 class="text-3xl font-bold text-teal-500 dark:text-teal-400 mb-4">Sobre o Melodia</h2>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+            O <strong>Melodia</strong> é mais que uma plataforma de streaming — é uma jornada musical feita sob medida para você. Desenvolvido com tecnologia de ponta, oferecemos <strong>qualidade de som superior</strong> que destaca cada detalhe da música, criando uma experiência imersiva e envolvente.
+          </p>
+          <p class="text-lg text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+            Com ferramentas inteligentes, você cria <strong>playlists personalizadas</strong> que acompanham seu estilo, humor e momento. Explore novos horizontes sonoros com nossa função de <strong>descoberta de artistas</strong>, que conecta você a talentos emergentes e músicas que combinam com seu gosto.
+          </p>
+          <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            Tudo isso com uma <strong>interface intuitiva</strong>, pensada para tornar sua navegação simples, fluida e prazerosa — seja no celular, tablet ou computador. No Melodia, a música é mais do que ouvir: é viver.
+          </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RODAPÉ -->
+  <footer class="bg-white dark:bg-gray-900 text-center py-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+    <div class="flex justify-center space-x-6 mb-4">
+      <a href="https://www.instagram.com" aria-label="Instagram" class="hover:text-teal-400 text-xl"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.twitter.com" aria-label="Twitter" class="hover:text-teal-400 text-xl"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com" aria-label="Facebook" class="hover:text-teal-400 text-xl"><i class="fab fa-facebook"></i></a>
+    </div>
+    <p>&copy; 2025 Melodia. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const root = document.documentElement;
+
+      const setTheme = (theme) => {
+        if (theme === 'light') {
+          root.classList.remove('dark');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+          root.classList.add('dark');
+          themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        localStorage.setItem('theme', theme);
+      };
+
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      setTheme(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const isDark = root.classList.contains('dark');
+        setTheme(isDark ? 'light' : 'dark');
+      });
+    });
+  </script>
+
+</body>
+</html>

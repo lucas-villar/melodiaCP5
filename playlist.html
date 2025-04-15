@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minha Playlist - Melodia</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#14b8a6',
+            secondary: '#6366f1',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body, html {
+      font-family: 'Nunito', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    .tutorial-popup {
+      position: flex;
+      justify-content: center; 
+      align-items: center; 
+      position: absolute;
+      top: 535px; 
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #1e293b;
+      color: #f1f5f9;
+      padding: 20px 24px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 420px;
+      z-index: 9999;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .tutorial-popup button {
+      background-color: #14b8a6;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .tutorial-popup button:hover {
+      background-color: #0f8c7a;
+    }
+
+    @media (max-width: 768px) {
+      .tutorial-popup {
+        width: 85%;
+      }
+    }
+  </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+
+  <!-- NAVBAR -->
+  <header class="fixed top-0 w-full bg-white/70 dark:bg-gray-900/70 backdrop-blur-md z-50 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
+      <h1 class="text-2xl font-bold text-teal-500 dark:text-teal-400">Melodia</h1>
+
+      <!-- Botões -->
+      <div class="flex items-center space-x-4">
+        <!-- Botão Tema -->
+        <button id="theme-toggle" class="text-teal-500 dark:text-teal-400 text-xl" aria-label="Alternar tema">
+          <i id="theme-icon" class="fas fa-moon"></i>
+        </button>
+
+        <!-- Botão Mobile -->
+        <button id="menu-btn" class="md:hidden text-teal-500 dark:text-teal-400 text-2xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <!-- Menu Desktop -->
+      <nav id="menu" class="hidden md:flex space-x-4">
+        <a href="./main.html" class="hover:text-teal-500 dark:hover:text-teal-400">Inicio</a>
+        <a href="./sobre.html" class="hover:text-teal-500 dark:hover:text-teal-400">Sobre</a>
+        <a href="./contato.html" class="hover:text-teal-500 dark:hover:text-teal-400">Contato</a>
+      </nav>
+    </div>
+
+    <!-- Menu Mobile Expandido -->
+    <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 space-y-2 bg-white/90 dark:bg-gray-900/90">
+      <a href="./main.html" class="hover:text-teal-500 dark:hover:text-teal-400">Inicio</a>
+      <a href="./sobre.html" class="block hover:text-teal-500 dark:hover:text-teal-400">Sobre</a>
+      <a href="./contato.html" class="block hover:text-teal-500 dark:hover:text-teal-400">Contato</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="pt-28 text-center px-6 bg-gradient-to-br from-purple-700 via-indigo-800 to-gray-900 min-h-screen flex flex-col items-center justify-center text-white">
+    <h2 class="text-4xl sm:text-5xl font-bold mb-4">Minha Playlist: <span class="text-teal-400">Aproveite sua música favorita</span></h2>
+    <p class="text-lg max-w-xl mx-auto mb-6">Adicione, ouça, edite e compartilhe suas músicas favoritas!</p>
+  </section>
+
+  <!-- PLAYLIST -->
+  <main class="max-w-7xl mx-auto px-6 py-16 space-y-12">
+    <!-- Playlist Controls -->
+    <section>
+      <h3 class="text-2xl font-semibold mb-6">Adicionar Música</h3>
+      <button id="add-music-btn" class="bg-teal-500 hover:bg-teal-400 text-white font-semibold py-3 px-6 rounded-full transition">Adicionar Música</button>
+    </section>
+
+    <!-- Playlist - List of Songs -->
+    <section id="playlist" class="space-y-6">
+      <h3 class="text-2xl font-semibold mb-4">Sua Playlist</h3>
+      <ul id="playlist-songs" class="space-y-4"></ul>
+    </section>
+
+    <!-- Audio Player -->
+    <section id="audio-player" class="bg-gray-800 text-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold mb-4">Player de Áudio</h3>
+      <audio id="audio" controls class="w-full">
+        <source id="audio-source" src="" type="audio/mp3">
+        Seu navegador não suporta o elemento de áudio.
+      </audio>
+    </section>
+  </main>
+
+  <!-- Tutorial Pop-up (fixo e elegante) -->
+  <div id="tutorial-popup" class="tutorial-popup">
+    <h3 id="tutorial-title" class="text-xl font-bold mb-2">Passo 1</h3>
+    <p id="tutorial-description" class="text-base leading-relaxed">Clique no botão "Adicionar Música" para adicionar uma nova música à sua playlist.</p>
+    <button id="next-step">Avançar</button>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white dark:bg-gray-900 text-center py-6 text-sm text-gray-500 dark:text-gray-400 transition-colors duration-300">
+    <div class="flex justify-center space-x-6 mb-4">
+      <a href="https://www.instagram.com" aria-label="Instagram" class="hover:text-teal-400 text-xl"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.twitter.com" aria-label="Twitter" class="hover:text-teal-400 text-xl"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com" aria-label="Facebook" class="hover:text-teal-400 text-xl"><i class="fab fa-facebook"></i></a>
+    </div>
+    <p>&copy; 2025 Melodia. Todos os direitos reservados.</p>
+  </footer>
+
+  <!-- JS - Menu, Tema e Tutorial -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+        });
+      });
+
+      // Tema
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const root = document.documentElement;
+
+      const setTheme = (theme) => {
+        if (theme === 'light') {
+          root.classList.remove('dark');
+          themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+          root.classList.add('dark');
+          themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        localStorage.setItem('theme', theme);
+      };
+
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      setTheme(savedTheme);
+
+      themeToggle.addEventListener('click', () => {
+        const isDark = root.classList.contains('dark');
+        setTheme(isDark ? 'light' : 'dark');
+      });
+
+      // Tutorial
+      const addMusicBtn = document.getElementById('add-music-btn');
+      const playlistSongs = document.getElementById('playlist-songs');
+      const audioElement = document.getElementById('audio');
+      const audioSource = document.getElementById('audio-source');
+      const closeTutorialBtn = document.getElementById('next-step');
+      const tutorialPopup = document.getElementById('tutorial-popup');
+      const tutorialTitle = document.getElementById('tutorial-title');
+      const tutorialDescription = document.getElementById('tutorial-description');
+
+      const musicList = [
+        { title: 'Oceano Azul', artist: 'Luan Beats', duration: '3:45', file: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+        { title: 'Noite Serena', artist: 'DJ Relax', duration: '4:10', file: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+        { title: 'Ritmo Solar', artist: 'Luz & Som', duration: '2:58', file: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+      ];
+
+      function createMusicItem(music) {
+        const li = document.createElement('li');
+        li.className = 'bg-gray-700 p-4 rounded-lg shadow-md space-y-2';
+
+        const info = document.createElement('div');
+        info.className = 'flex flex-col sm:flex-row sm:justify-between sm:items-center';
+
+        const details = document.createElement('div');
+        details.innerHTML = `
+          <p class="text-lg font-semibold">${music.title}</p>
+          <p class="text-sm text-gray-300">Artista: ${music.artist} | Duração: ${music.duration}</p>
+        `;
+
+        const actions = document.createElement('div');
+        actions.className = 'mt-2 sm:mt-0 space-x-3';
+        actions.innerHTML = `
+          <button class="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-400" title="Tocar">Tocar</button>
+          <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-400" title="Editar">Editar</button>
+          <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-400" title="Excluir">Excluir</button>
+          <a href="${music.file}" download="${music.title}" class="text-teal-300 text-lg" title="Baixar"><i class="fas fa-download"></i></a>
+        `;
+
+        info.appendChild(details);
+        info.appendChild(actions);
+        li.appendChild(info);
+
+        const [playBtn, editBtn, deleteBtn] = actions.querySelectorAll('button');
+
+        playBtn.onclick = () => {
+          audioSource.src = music.file;
+          audioElement.load();
+          audioElement.play();
+        };
+
+        editBtn.onclick = () => {
+          const newTitle = prompt('Novo nome da música:', music.title);
+          if (newTitle) {
+            music.title = newTitle;
+            details.querySelector('p').textContent = newTitle;
+          }
+        };
+
+        deleteBtn.onclick = () => {
+          if (confirm(`Tem certeza que deseja remover "${music.title}" da playlist?`)) {
+            li.remove();
+          }
+        };
+
+        playlistSongs.appendChild(li);
+      }
+
+      // Tutorial
+      let currentStep = 1;
+      function showTutorialStep(step) {
+        const steps = {
+          1: 'Clique no botão "Adicionar Música" para adicionar uma nova música à sua playlist.',
+          2: 'Veja como está ficando "Sua Playlist".',
+          3: 'Escolha a música para ouvir, clicando no botão "Tocar".',
+          4: 'Edite as músicas da sua playlist, no botão "Editar".',
+          5: 'Exclua as músicas da sua playlist, no botão "Excluir".',
+          6: 'Ouça sua música no "Player de Áudio".',
+          7: 'Aproveite a Melodia 🎧',
+        };
+
+        tutorialTitle.textContent = `Passo ${step}`;
+        tutorialDescription.textContent = steps[step];
+        if (step === 7) {
+          closeTutorialBtn.textContent = 'Fechar Tutorial';
+        }
+      }
+
+      closeTutorialBtn.addEventListener('click', () => {
+        if (currentStep < 7) {
+          currentStep++;
+          showTutorialStep(currentStep);
+        } else {
+          tutorialPopup.style.display = 'none';
+        }
+      });
+
+      // Show tutorial popup initially
+      setTimeout(() => {
+        tutorialPopup.style.display = 'block';
+      }, 500);
+
+      // Adiciona música à playlist
+      addMusicBtn.addEventListener('click', () => {
+        const music = musicList[Math.floor(Math.random() * musicList.length)];
+        createMusicItem(music);
+      });
+    });
+  </script>
+</body>
+</html>
